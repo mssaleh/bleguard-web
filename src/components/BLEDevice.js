@@ -24,8 +24,24 @@ const BLEDevice = () => {
       console.log('Device connected:', device);
 
       console.log('Connecting to GATT server...');
-      const server = await device.gatt.connect();
+      const server = await device.gatt.connect({ 
+          transport: 'le', // May be required for bonding on some devices 
+      });
       console.log('GATT server connected:', server);
+  
+      // Handle potential bonding process
+      server.addEventListener('gattserverdisconnected', async (event) => {
+        console.log('Device disconnected:', event);
+
+        // Attempt to reconnect and bond (if bonding is needed)
+        const didBond = await device.createBond();
+        if (didBond) {
+          console.log('Bonding successful!');
+          // You might need to reconnect after bonding
+        } else {
+          console.error('Bonding failed.');
+        }
+      });
 
       console.log('Getting primary service...');
       const service = await server.getPrimaryService(targetServiceUUID);
@@ -59,7 +75,7 @@ const BLEDevice = () => {
     const hexValue = parts.reverse().join('');  // 09F4
     return parseInt(hexValue, 16); // 2548
   };
- 
+
   useEffect(() => {
     // We won't call connectToBLEDevice directly within useEffect  
   }, []);
