@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-
 'use client'; // Mark as a Client Component
+
+import React, { useState, useEffect } from 'react';
 
 const BLEDevice = () => {
   const [deviceValue, setDeviceValue] = useState(null);
