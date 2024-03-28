@@ -58,9 +58,14 @@ const BLEDevice = () => {
     connectToBLEDevice();
   });
 
+  const handleConnectClick = () => {
+    connectToBLEDevice();
+  };
+  
   return (
     <div>
       {/* Consider adding buttons to trigger the connectToBLEDevice function */}
+      <button onClick={handleConnectClick}>Connect to BLE Device</button>
       {deviceValue !== null ? (
         <p>Current Value: {deviceValue}</p>
       ) : (
